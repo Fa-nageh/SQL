@@ -1,0 +1,69 @@
+/*Query 1 -Query for first insight*/
+
+SELECT
+  Artist.ArtistId AS artist_id,
+  Artist.Name AS artist_name,
+  COUNT(*) AS Number_of_tracks
+FROM Artist
+JOIN Album
+  ON Artist.ArtistId = Album.ArtistId
+JOIN Track
+  ON Album.AlbumId = Track.AlbumId
+GROUP BY 1,
+         2
+ORDER BY 3 DESC
+LIMIT 10;
+
+
+/*Query 2 -Query for second insight*/
+
+SELECT
+  Customer.FirstName AS Name,
+  Invoice.InvoiceDate AS invoice_date,
+  invoice.total AS total_purchases
+FROM CUSTOMER
+JOIN Invoice
+  ON Customer.CustomerId = invoice.CustomerId
+WHERE Invoice_Date BETWEEN "2013-12-01" AND "2013-12-30"
+GROUP BY 2
+ORDER BY total_purchases DESC
+
+
+
+/*Query 3 -Query for Third insight*/
+
+SELECT
+  Customer.FirstName AS first_name,
+  Customer.Phone AS Phone_number,
+  Customer.Address AS address_title,
+  Genre.Name AS genre_type,
+  COUNT(*) AS POP_Albums_Purchased
+FROM Customer
+JOIN Invoice
+  ON Customer.CustomerId = Invoice.CustomerId
+JOIN InvoiceLine
+  ON Invoice.InvoiceId = InvoiceLine.InvoiceId
+JOIN Track
+  ON InvoiceLine.TrackId = Track.TrackId
+JOIN Genre
+  ON track.GenreId = Genre.GenreId
+WHERE genre_type LIKE "POP"
+GROUP BY 1
+ORDER BY 5 DESC
+
+
+/*Query 4 -Query for Fourt insight*/
+
+SELECT
+  Employee.EmployeeId AS id,
+  Employee.FirstName AS Name,
+  SUM(invoice.Total) AS value_of_orders,
+  COUNT(*) AS number_of_customer_serviced
+FROM Employee
+JOIN Customer
+  ON Employee.EmployeeId = Customer.SupportRepId
+JOIN Invoice
+  ON Customer.CustomerId = Invoice.CustomerId
+GROUP BY 1,
+         2
+ORDER BY 3 DESC
